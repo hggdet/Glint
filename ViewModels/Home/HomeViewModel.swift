@@ -43,11 +43,9 @@ final class HomeViewModel {
         do {
             currentUser = try await services.users.fetchUser(id: viewerID, viewedBy: viewerID)
             if let currentUser { authorsByID[viewerID] = try await userForDisplay(currentUser) }
-            async let storyLoad = services.stories.fetchStories(for: viewerID)
-            async let unreadLoad = services.notifications.unreadCount(for: viewerID)
             let feed = try await services.posts.fetchFeed(for: viewerID, page: 0, pageSize: pageSize)
-            let loadedStories = try await storyLoad
-            let unreadCount = try await unreadLoad
+            let loadedStories = try await services.stories.fetchStories(for: viewerID)
+            let unreadCount = try await services.notifications.unreadCount(for: viewerID)
             try await loadAuthors(for: feed.items)
             try await loadUsers(withIDs: Set(loadedStories.map { $0.story.authorID }))
             posts = feed.items
@@ -65,11 +63,9 @@ final class HomeViewModel {
         errorKey = nil
         paginationErrorKey = nil
         do {
-            async let storyLoad = services.stories.fetchStories(for: viewerID)
-            async let unreadLoad = services.notifications.unreadCount(for: viewerID)
             let feed = try await services.posts.fetchFeed(for: viewerID, page: 0, pageSize: pageSize)
-            let loadedStories = try await storyLoad
-            let unreadCount = try await unreadLoad
+            let loadedStories = try await services.stories.fetchStories(for: viewerID)
+            let unreadCount = try await services.notifications.unreadCount(for: viewerID)
             try await loadAuthors(for: feed.items)
             try await loadUsers(withIDs: Set(loadedStories.map { $0.story.authorID }))
             posts = feed.items

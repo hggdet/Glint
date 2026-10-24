@@ -60,7 +60,7 @@ public final class MockUserService: UserService {
             !isBlockedEitherWay(user.id, viewerID)
                 && (user.username.localizedCaseInsensitiveContains(term) || user.displayName.localizedCaseInsensitiveContains(term))
         }
-        let counted = await withVisibleUserCounts(matches)
+        let counted = try await withVisibleUserCounts(matches)
         return Array(counted.sorted { $0.username < $1.username }.prefix(max(0, limit)))
     }
 
@@ -118,7 +118,7 @@ public final class MockUserService: UserService {
         guard !isBlockedEitherWay(userID, currentUserID) else { throw GlintServiceError.unavailable }
         if followingByUserID[currentUserID, default: []].contains(userID) { return .accepted }
 
-        let status = try commitGraph {
+        let status: FollowRequestStatus = try commitGraph {
             if let requestIndex = followRequests.indices.last(where: {
                 followRequests[$0].requesterID == currentUserID && followRequests[$0].targetUserID == userID
             }) {
