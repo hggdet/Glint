@@ -1,7 +1,7 @@
 import Foundation
 
 @MainActor
-public protocol PostService: AnyObject {
+public protocol PostService: AnyObject, Sendable {
     func fetchFeed(for viewerID: UUID, page: Int, pageSize: Int) async throws -> PageResult<GlintPost>
     func fetchPosts(by authorID: UUID, for viewerID: UUID, page: Int, pageSize: Int) async throws -> PageResult<GlintPost>
     func fetchPost(_ postID: UUID, for viewerID: UUID) async throws -> GlintPost

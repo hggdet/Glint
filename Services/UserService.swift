@@ -1,7 +1,7 @@
 import Foundation
 
 @MainActor
-public protocol UserService: AnyObject {
+public protocol UserService: AnyObject, Sendable {
     func fetchUser(id: UUID, viewedBy viewerID: UUID) async throws -> GlintUser
     func searchUsers(query: String, viewedBy viewerID: UUID, limit: Int) async throws -> [GlintUser]
     func isUsernameAvailable(_ username: String, excluding userID: UUID?) async throws -> Bool

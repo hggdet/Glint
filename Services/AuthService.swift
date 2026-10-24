@@ -1,7 +1,7 @@
 import Foundation
 
 @MainActor
-public protocol AuthService: AnyObject {
+public protocol AuthService: AnyObject, Sendable {
     var currentSession: AuthSession? { get }
 
     func restoreSession() async throws -> AuthSession?
