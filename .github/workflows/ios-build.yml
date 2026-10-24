@@ -1,0 +1,134 @@
+name: iOS unsigned build
+
+on:
+  push:
+    branches: ["main", "master"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Test and build Glint without signing
+    runs-on: macos-26
+    timeout-minutes: 60
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Select Xcode 26
+        run: sudo xcode-select -s /Applications/Xcode_26.6.app/Contents/Developer
+
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Generate Xcode project
+        run: xcodegen generate --spec project.yml
+
+      - name: Show toolchain
+        run: |
+          xcodebuild -version
+          xcodegen version
+
+      - name: Resolve Swift packages
+        run: xcodebuild -resolvePackageDependencies -project Glint.xcodeproj -scheme Glint
+
+      - name: Run unit tests
+        run: >-
+          xcodebuild
+          -project Glint.xcodeproj
+          -scheme Glint
+          -configuration Debug
+          -destination 'platform=iOS Simulator,name=iPhone 17,OS=26.5'
+          -derivedDataPath "$RUNNER_TEMP/GlintTestDerivedData"
+          CODE_SIGNING_ALLOWED=NO
+          CODE_SIGNING_REQUIRED=NO
+          CODE_SIGN_IDENTITY=""
+          test
+
+      - name: Build unsigned iOS app
+        run: >-
+          xcodebuild
+          -project Glint.xcodeproj
+          -scheme Glint
+          -configuration Release
+          -destination 'generic/platform=iOS'
+          -derivedDataPath "$RUNNER_TEMP/GlintDerivedData"
+          CODE_SIGNING_ALLOWED=NO
+          CODE_SIGNING_REQUIRED=NO
+          CODE_SIGN_IDENTITY=""
+          build
+
+      - name: Package and validate unsigned IPA
+        shell: bash
+        run: |
+          set -euo pipefail
+          BUILT_APP="$RUNNER_TEMP/GlintDerivedData/Build/Products/Release-iphoneos/Glint.app"
+          IPA_ROOT="$RUNNER_TEMP/GlintIPA"
+          EXTRACT_ROOT="$RUNNER_TEMP/GlintIPA-Extracted"
+          IPA_PATH="$RUNNER_TEMP/Glint-unsigned.ipa"
+          LISTING_PATH="$RUNNER_TEMP/Glint-ipa-files.txt"
+          ARCHS_PATH="$RUNNER_TEMP/Glint-ipa-archs.txt"
+          BUILD_METADATA="$RUNNER_TEMP/Glint-ipa-build-metadata.txt"
+          CODESIGN_LOG="$RUNNER_TEMP/Glint-ipa-codesign.txt"
+          SIGNING_PATH="$RUNNER_TEMP/Glint-ipa-signing-entry.txt"
+
+          test -d "$BUILT_APP"
+          rm -rf "$IPA_ROOT"
+          mkdir -p "$IPA_ROOT/Payload"
+          ditto "$BUILT_APP" "$IPA_ROOT/Payload/Glint.app"
+          ditto -c -k --sequesterRsrc --keepParent "$IPA_ROOT/Payload" "$IPA_PATH"
+          test -f "$IPA_PATH"
+
+          unzip -tq "$IPA_PATH"
+          rm -rf "$EXTRACT_ROOT"
+          mkdir -p "$EXTRACT_ROOT"
+          (cd "$EXTRACT_ROOT" && unzip -q "$IPA_PATH")
+          unzip -Z -1 "$IPA_PATH" > "$LISTING_PATH"
+          grep -Fxq 'Payload/Glint.app/Info.plist' "$LISTING_PATH"
+          if grep -Eq '(^|/)embedded\.mobileprovision$|(^|/)_CodeSignature(/|$)' "$LISTING_PATH"; then
+            echo "IPA contains signing or provisioning data" >&2
+            exit 1
+          fi
+
+          APP_PATH="$EXTRACT_ROOT/Payload/Glint.app"
+          test -d "$APP_PATH"
+          EXECUTABLE="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleExecutable' "$APP_PATH/Info.plist")"
+          test -n "$EXECUTABLE"
+          EXECUTABLE_PATH="$APP_PATH/$EXECUTABLE"
+          test -f "$EXECUTABLE_PATH"
+          BUNDLE_ID="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' "$APP_PATH/Info.plist")"
+          test "$BUNDLE_ID" = "com.glint.ios"
+
+          lipo -archs "$EXECUTABLE_PATH" > "$ARCHS_PATH"
+          tr ' ' '\n' < "$ARCHS_PATH" | grep -Fxq arm64
+          xcrun vtool -show-build "$EXECUTABLE_PATH" > "$BUILD_METADATA"
+          grep -Eq 'platform IOS([[:space:]]|$)' "$BUILD_METADATA"
+          if grep -Eq 'platform IOSSIMULATOR([[:space:]]|$)' "$BUILD_METADATA"; then
+            echo "IPA executable contains an iOS Simulator platform slice" >&2
+            exit 1
+          fi
+
+          find "$APP_PATH" \( -name _CodeSignature -o -name embedded.mobileprovision \) -print -quit > "$SIGNING_PATH"
+          if test -s "$SIGNING_PATH"; then
+            echo "Extracted app contains a signature or provisioning profile" >&2
+            exit 1
+          fi
+          if /usr/bin/codesign -dv --verbose=2 "$APP_PATH" > "$CODESIGN_LOG" 2>&1; then
+            echo "Extracted app unexpectedly has a code signature" >&2
+            exit 1
+          fi
+
+          echo "Validated unsigned iOS IPA: $IPA_PATH"
+
+      - name: Upload unsigned IPA
+        uses: actions/upload-artifact@v4
+        with:
+          name: Glint-unsigned-IPA
+          path: ${{ runner.temp }}/Glint-unsigned.ipa
+          if-no-files-found: error
+          retention-days: 14

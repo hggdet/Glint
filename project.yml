@@ -1,0 +1,80 @@
+name: Glint
+options:
+  bundleIdPrefix: com.glint
+  deploymentTarget:
+    iOS: "26.0"
+  createIntermediateGroups: true
+  groupSortPosition: top
+
+fileGroups:
+  - GlintPlus.storekit
+
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    IPHONEOS_DEPLOYMENT_TARGET: "26.0"
+    TARGETED_DEVICE_FAMILY: "1"
+    GENERATE_INFOPLIST_FILE: YES
+    SWIFT_STRICT_CONCURRENCY: complete
+    ENABLE_PREVIEWS: YES
+    PRODUCT_BUNDLE_IDENTIFIER: com.glint.ios
+    INFOPLIST_KEY_CFBundleDisplayName: Glint
+    INFOPLIST_KEY_UILaunchScreen_Generation: YES
+
+packages: {}
+
+targets:
+  Glint:
+    type: application
+    platform: iOS
+    sources:
+      - path: App
+      - path: Models
+      - path: Services
+      - path: ViewModels
+      - path: Views
+      - path: Assets.xcassets
+        buildPhase: resources
+      - path: Resources/Localizable.xcstrings
+        buildPhase: resources
+      - path: Resources/Media
+        buildPhase: resources
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.glint.ios
+        INFOPLIST_KEY_CFBundleDisplayName: Glint
+        GENERATE_INFOPLIST_FILE: YES
+        SWIFT_VERSION: "6.0"
+        IPHONEOS_DEPLOYMENT_TARGET: "26.0"
+        TARGETED_DEVICE_FAMILY: "1"
+        SWIFT_STRICT_CONCURRENCY: complete
+
+  GlintTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: Tests/GlintTests
+    dependencies:
+      - target: Glint
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.glint.ios.tests
+        GENERATE_INFOPLIST_FILE: YES
+        SWIFT_VERSION: "6.0"
+        IPHONEOS_DEPLOYMENT_TARGET: "26.0"
+        TARGETED_DEVICE_FAMILY: "1"
+        SWIFT_STRICT_CONCURRENCY: complete
+
+schemes:
+  Glint:
+    build:
+      targets:
+        Glint: all
+    run:
+      config: Debug
+      storeKitConfiguration: GlintPlus.storekit
+    test:
+      targets:
+        - GlintTests
+    archive:
+      config: Release

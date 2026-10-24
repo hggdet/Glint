@@ -1,0 +1,128 @@
+{
+  "appPolicies": {
+    "eula": "",
+    "policies": [
+      {
+        "locale": "en_US",
+        "policyText": "",
+        "policyURL": ""
+      }
+    ]
+  },
+  "identifier": "D8C519AF",
+  "nonRenewingSubscriptions": [],
+  "products": [],
+  "settings": {
+    "_askToBuyEnabled": false,
+    "_billingGracePeriodEnabled": false,
+    "_billingIssuesEnabled": false,
+    "_disableDialogs": false,
+    "_failTransactionsEnabled": false,
+    "_locale": "en_US",
+    "_renewalBillingIssuesEnabled": false,
+    "_storefront": "USA",
+    "_timeRate": 15,
+    "_compatibilityTimeRate": {
+      "3": 6
+    },
+    "_storeKitErrors": [
+      {
+        "enabled": false,
+        "name": "Load Products"
+      },
+      {
+        "enabled": false,
+        "name": "Purchase"
+      },
+      {
+        "enabled": false,
+        "name": "Verification"
+      },
+      {
+        "enabled": false,
+        "name": "App Store Sync"
+      },
+      {
+        "enabled": false,
+        "name": "Subscription Status"
+      },
+      {
+        "enabled": false,
+        "name": "App Transaction"
+      },
+      {
+        "enabled": false,
+        "name": "Manage Subscriptions Sheet"
+      },
+      {
+        "enabled": false,
+        "name": "Refund Request Sheet"
+      },
+      {
+        "enabled": false,
+        "name": "Offer Code Redeem Sheet"
+      }
+    ]
+  },
+  "subscriptionBundleGroups": [],
+  "subscriptionGroups": [
+    {
+      "id": "A813B927",
+      "localizations": [],
+      "name": "Glint+",
+      "subscriptions": [
+        {
+          "adHocOffers": [],
+          "billingPlans": [],
+          "codeOffers": [],
+          "displayPrice": "2.99",
+          "familyShareable": false,
+          "groupNumber": 1,
+          "internalID": "B1C49D22",
+          "introductoryOffers": [],
+          "localizations": [
+            {
+              "description": "Custom profile avatar shapes",
+              "displayName": "Glint+ Monthly",
+              "locale": "en_US"
+            }
+          ],
+          "productID": "glint_plus_monthly",
+          "recurringSubscriptionPeriod": "P1M",
+          "referenceName": "Glint+ Monthly",
+          "subscriptionGroupID": "A813B927",
+          "type": "RecurringSubscription",
+          "winbackOffers": []
+        },
+        {
+          "adHocOffers": [],
+          "billingPlans": [],
+          "codeOffers": [],
+          "displayPrice": "24.99",
+          "familyShareable": false,
+          "groupNumber": 1,
+          "internalID": "B1C49D23",
+          "introductoryOffers": [],
+          "localizations": [
+            {
+              "description": "Custom profile avatar shapes",
+              "displayName": "Glint+ Yearly",
+              "locale": "en_US"
+            }
+          ],
+          "productID": "glint_plus_yearly",
+          "recurringSubscriptionPeriod": "P1Y",
+          "referenceName": "Glint+ Yearly",
+          "subscriptionGroupID": "A813B927",
+          "type": "RecurringSubscription",
+          "winbackOffers": []
+        }
+      ]
+    }
+  ],
+  "subscriptionSuiteGroups": [],
+  "version": {
+    "major": 6,
+    "minor": 3
+  }
+}
