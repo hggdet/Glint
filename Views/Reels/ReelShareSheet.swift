@@ -60,7 +60,7 @@ struct ReelShareSheet: View {
 
                 switch shareItem {
                 case .movie(let movie):
-                    ShareLink(item: movie) {
+                    ShareLink(item: movie.sourceURL) {
                         Label("share.reel.button", systemImage: "square.and.arrow.up")
                             .frame(maxWidth: .infinity)
                     }

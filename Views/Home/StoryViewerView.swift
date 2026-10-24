@@ -59,7 +59,10 @@ struct StoryViewerView: View {
                         reporterID: viewerID,
                         target: .story(reportStoryID),
                         reason: reason,
-                        note: note?.trimmingCharacters(in: .whitespacesAndNewlines).flatMap { $0.isEmpty ? nil : $0 }
+                        note: {
+                            let trimmed = note?.trimmingCharacters(in: .whitespacesAndNewlines)
+                            return trimmed?.isEmpty == true ? nil : trimmed
+                        }()
                     )
                     try await services.moderation.submitReport(report)
                 }
