@@ -37,7 +37,7 @@ struct OwnProfileView: View {
             .background(GlintPalette.background.ignoresSafeArea())
             .navigationTitle("tab.profile")
             .navigationBarTitleDisplayMode(.inline)
-            .toolbar(content: profileToolbarContent)
+            .toolbar(content: { profileToolbarContent })
             .sheet(item: $destination) { page in
                 switch page {
                 case .edit:
