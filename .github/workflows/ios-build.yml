@@ -12,7 +12,9 @@ permissions:
 jobs:
   build:
     name: Test and build Glint without signing
-    runs-on: macos-26
+    # The Intel macOS 26 image is available for private repositories on the
+    # current GitHub-hosted runner plan.
+    runs-on: macos-26-intel
     timeout-minutes: 60
     steps:
       - name: Check out source
@@ -22,6 +24,15 @@ jobs:
 
       - name: Select Xcode 26
         run: sudo xcode-select -s /Applications/Xcode_26.6.app/Contents/Developer
+
+      - name: Verify Apple toolchain and simulator
+        run: |
+          set -euo pipefail
+          xcodebuild -version
+          xcode-select -p
+          xcodebuild -showsdks | grep -E 'iphoneos26|iphonesimulator26'
+          xcrun simctl list runtimes | grep -F 'iOS 26.5'
+          xcrun simctl list devicetypes | grep -F 'iPhone 17'
 
       - name: Install XcodeGen
         run: brew install xcodegen
