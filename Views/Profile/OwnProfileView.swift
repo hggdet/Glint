@@ -38,24 +38,7 @@ struct OwnProfileView: View {
             .navigationTitle("tab.profile")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button { destination = .plus } label: {
-                        Label("plus.title", systemImage: "sparkles")
-                            .labelStyle(.iconOnly)
-                            .frame(width: 44, height: 44)
-                    }
-                    .buttonStyle(.glass)
-                    .accessibilityLabel(Text("plus.title"))
-                }
-                ToolbarItem(placement: .topBarLeading) {
-                    Button { destination = .edit } label: {
-                        Label("profile.edit", systemImage: "pencil")
-                            .labelStyle(.iconOnly)
-                            .frame(width: 44, height: 44)
-                    }
-                    .buttonStyle(.glass)
-                    .accessibilityLabel(Text("profile.edit"))
-                }
+                profileToolbarContent
             }
             .sheet(item: $destination) { page in
                 switch page {
@@ -77,6 +60,28 @@ struct OwnProfileView: View {
                 else { await model.load() }
             }
         }
+    }
+
+    @ToolbarContentBuilder
+    private var profileToolbarContent: some ToolbarContent {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button { destination = .plus } label: {
+                        Label("plus.title", systemImage: "sparkles")
+                            .labelStyle(.iconOnly)
+                            .frame(width: 44, height: 44)
+                    }
+                    .buttonStyle(.glass)
+                    .accessibilityLabel(Text("plus.title"))
+                }
+                ToolbarItem(placement: .topBarLeading) {
+                    Button { destination = .edit } label: {
+                        Label("profile.edit", systemImage: "pencil")
+                            .labelStyle(.iconOnly)
+                            .frame(width: 44, height: 44)
+                    }
+                    .buttonStyle(.glass)
+                    .accessibilityLabel(Text("profile.edit"))
+                }
     }
 
     private var profileContent: some View {

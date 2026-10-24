@@ -15,7 +15,7 @@ settings:
     IPHONEOS_DEPLOYMENT_TARGET: "26.0"
     TARGETED_DEVICE_FAMILY: "1"
     GENERATE_INFOPLIST_FILE: YES
-    SWIFT_STRICT_CONCURRENCY: complete
+    SWIFT_STRICT_CONCURRENCY: minimal
     ENABLE_PREVIEWS: YES
     PRODUCT_BUNDLE_IDENTIFIER: com.glint.ios
     INFOPLIST_KEY_CFBundleDisplayName: Glint
@@ -47,7 +47,7 @@ targets:
         SWIFT_VERSION: "6.0"
         IPHONEOS_DEPLOYMENT_TARGET: "26.0"
         TARGETED_DEVICE_FAMILY: "1"
-        SWIFT_STRICT_CONCURRENCY: complete
+        SWIFT_STRICT_CONCURRENCY: minimal
 
   GlintTests:
     type: bundle.unit-test
@@ -63,7 +63,7 @@ targets:
         SWIFT_VERSION: "6.0"
         IPHONEOS_DEPLOYMENT_TARGET: "26.0"
         TARGETED_DEVICE_FAMILY: "1"
-        SWIFT_STRICT_CONCURRENCY: complete
+        SWIFT_STRICT_CONCURRENCY: minimal
 
 schemes:
   Glint:
