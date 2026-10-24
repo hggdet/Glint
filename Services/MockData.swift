@@ -148,8 +148,8 @@ public enum MockData {
             id: UUID(uuidString: "B2000000-0000-4000-8000-000000000002") ?? UUID(),
             authorID: leo.id,
             caption: "Crispy edges, soft middle. The good kind of Sunday.",
-            contentKind: .reel,
             media: [PostMedia(kind: .video, assetName: "sample_reel_pasta", accessibilityDescription: "A pan of fresh pasta being tossed", aspectRatio: 0.75, durationSeconds: 19)],
+            contentKind: .reel,
             createdAt: .now.addingTimeInterval(-3_600),
             likeCount: 1_032,
             commentCount: 64
@@ -176,8 +176,8 @@ public enum MockData {
             id: UUID(uuidString: "B2000000-0000-4000-8000-000000000005") ?? UUID(),
             authorID: zara.id,
             caption: "Tiny corner, big energy.",
-            contentKind: .reel,
             media: [PostMedia(kind: .video, assetName: "sample_reel_studio", accessibilityDescription: "Colorful late-night art studio", aspectRatio: 0.75, durationSeconds: 12)],
+            contentKind: .reel,
             createdAt: .now.addingTimeInterval(-28_800),
             likeCount: 2_410,
             commentCount: 105
@@ -213,8 +213,8 @@ public enum MockData {
             id: UUID(uuidString: "B2000000-0000-4000-8000-000000000009") ?? UUID(),
             authorID: privateUser.id,
             caption: "A small film from a private weekend.",
-            contentKind: .reel,
             media: [PostMedia(kind: .video, assetName: "sample_reel_private_weekend", accessibilityDescription: "A quiet weekend walk filmed on a phone", aspectRatio: 0.75, durationSeconds: 10)],
+            contentKind: .reel,
             createdAt: .now.addingTimeInterval(-259_200),
             likeCount: 22,
             commentCount: 2
@@ -223,8 +223,8 @@ public enum MockData {
             id: UUID(uuidString: "B2000000-0000-4000-8000-000000000010") ?? UUID(),
             authorID: maya.id,
             caption: "A slow coffee break in a warm corner of the city.",
-            contentKind: .reel,
             media: [PostMedia(kind: .video, assetName: "sample_reel_coffee", accessibilityDescription: "A steaming cup of coffee on a café table", aspectRatio: 0.75, durationSeconds: 3)],
+            contentKind: .reel,
             createdAt: .now.addingTimeInterval(-345_600),
             likeCount: 634,
             commentCount: 28
@@ -233,8 +233,8 @@ public enum MockData {
             id: UUID(uuidString: "B2000000-0000-4000-8000-000000000011") ?? UUID(),
             authorID: noah.id,
             caption: "Baghdad at the soft edge of dusk.",
-            contentKind: .reel,
             media: [PostMedia(kind: .video, assetName: "sample_reel_baghdad", accessibilityDescription: "A glowing sunset over a quiet Baghdad street", aspectRatio: 0.75, durationSeconds: 3)],
+            contentKind: .reel,
             createdAt: .now.addingTimeInterval(-432_000),
             likeCount: 912,
             commentCount: 35
