@@ -12,9 +12,8 @@ permissions:
 jobs:
   build:
     name: Test and build Glint without signing
-    # The Intel macOS 26 image is available for private repositories on the
-    # current GitHub-hosted runner plan.
-    runs-on: macos-26-intel
+    # macos-15 is available for private repositories and includes Xcode 26.
+    runs-on: macos-15
     timeout-minutes: 60
     steps:
       - name: Check out source
@@ -23,7 +22,7 @@ jobs:
           persist-credentials: false
 
       - name: Select Xcode 26
-        run: sudo xcode-select -s /Applications/Xcode_26.6.app/Contents/Developer
+        run: sudo xcode-select -s /Applications/Xcode_26.3.app/Contents/Developer
 
       - name: Verify Apple toolchain and simulator
         run: |
@@ -31,8 +30,8 @@ jobs:
           xcodebuild -version
           xcode-select -p
           xcodebuild -showsdks | grep -E 'iphoneos26|iphonesimulator26'
-          xcrun simctl list runtimes | grep -F 'iOS 26.5'
-          xcrun simctl list devicetypes | grep -F 'iPhone 17'
+          xcrun simctl list runtimes | grep -F 'iOS 26.2'
+          xcrun simctl list devicetypes | grep -F 'iPhone 16'
 
       - name: Install XcodeGen
         run: brew install xcodegen
@@ -54,7 +53,7 @@ jobs:
           -project Glint.xcodeproj
           -scheme Glint
           -configuration Debug
-          -destination 'platform=iOS Simulator,name=iPhone 17,OS=26.5'
+          -destination 'platform=iOS Simulator,name=iPhone 16,OS=26.2'
           -derivedDataPath "$RUNNER_TEMP/GlintTestDerivedData"
           CODE_SIGNING_ALLOWED=NO
           CODE_SIGNING_REQUIRED=NO
