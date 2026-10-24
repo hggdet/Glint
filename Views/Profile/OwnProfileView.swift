@@ -37,7 +37,26 @@ struct OwnProfileView: View {
             .background(GlintPalette.background.ignoresSafeArea())
             .navigationTitle("tab.profile")
             .navigationBarTitleDisplayMode(.inline)
-            .toolbar(content: { profileToolbarContent })
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    HStack(spacing: 8) {
+                        Button { destination = .edit } label: {
+                            Label("profile.edit", systemImage: "pencil")
+                                .labelStyle(.iconOnly)
+                                .frame(width: 44, height: 44)
+                        }
+                        .buttonStyle(.glass)
+                        .accessibilityLabel(Text("profile.edit"))
+                        Button { destination = .plus } label: {
+                            Label("plus.title", systemImage: "sparkles")
+                                .labelStyle(.iconOnly)
+                                .frame(width: 44, height: 44)
+                        }
+                        .buttonStyle(.glass)
+                        .accessibilityLabel(Text("plus.title"))
+                    }
+                }
+            }
             .sheet(item: $destination) { page in
                 switch page {
                 case .edit:
@@ -58,28 +77,6 @@ struct OwnProfileView: View {
                 else { await model.load() }
             }
         }
-    }
-
-    @ToolbarContentBuilder
-    private var profileToolbarContent: some ToolbarContent {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button { destination = .plus } label: {
-                        Label("plus.title", systemImage: "sparkles")
-                            .labelStyle(.iconOnly)
-                            .frame(width: 44, height: 44)
-                    }
-                    .buttonStyle(.glass)
-                    .accessibilityLabel(Text("plus.title"))
-                }
-                ToolbarItem(placement: .topBarLeading) {
-                    Button { destination = .edit } label: {
-                        Label("profile.edit", systemImage: "pencil")
-                            .labelStyle(.iconOnly)
-                            .frame(width: 44, height: 44)
-                    }
-                    .buttonStyle(.glass)
-                    .accessibilityLabel(Text("profile.edit"))
-                }
     }
 
     private var profileContent: some View {
