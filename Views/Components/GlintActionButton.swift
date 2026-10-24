@@ -67,6 +67,7 @@ struct GlintActionButton: View {
         .accessibilityAddTraits(isActive ? .isSelected : [])
     }
 
+    @ViewBuilder
     private var actionIcon: some View {
         let icon = Image(systemName: symbol)
             .font(.system(size: 18, weight: .semibold))
