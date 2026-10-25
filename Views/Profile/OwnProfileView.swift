@@ -37,26 +37,6 @@ struct OwnProfileView: View {
             .background(GlintPalette.background.ignoresSafeArea())
             .navigationTitle("tab.profile")
             .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    HStack(spacing: 8) {
-                        Button { destination = .edit } label: {
-                            Label("profile.edit", systemImage: "pencil")
-                                .labelStyle(.iconOnly)
-                                .frame(width: 44, height: 44)
-                        }
-                        .buttonStyle(.glass)
-                        .accessibilityLabel(Text("profile.edit"))
-                        Button { destination = .plus } label: {
-                            Label("plus.title", systemImage: "sparkles")
-                                .labelStyle(.iconOnly)
-                                .frame(width: 44, height: 44)
-                        }
-                        .buttonStyle(.glass)
-                        .accessibilityLabel(Text("plus.title"))
-                    }
-                }
-            }
             .sheet(item: $destination) { page in
                 switch page {
                 case .edit:
