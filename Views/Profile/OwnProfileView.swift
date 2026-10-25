@@ -26,7 +26,7 @@ struct OwnProfileView: View {
                 case .failed:
                     GlintErrorState(
                         title: "profile.error.title",
-                        message: model.errorKey.map(LocalizedStringKey.init) ?? "profile.error.generic",
+                        message: model.errorKey.map { LocalizedStringKey($0) } ?? "profile.error.generic",
                         retryTitle: "auth.retry.button",
                         retry: { Task { await model.retry() } }
                     )
